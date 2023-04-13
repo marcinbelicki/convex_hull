@@ -12,7 +12,7 @@ class PricesDataTest extends AnyWordSpec {
     case _ => s.sliding(2).forall { case Seq(x, y) => ord.lteq(x, y) }
   }
 
-  private val priceData = BTC
+  private val priceData = Prices.BTC
   "PricesData" must {
     "be sorted by date" in
       assert(

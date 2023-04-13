@@ -11,7 +11,7 @@ abstract class Points(
 
   override def equals(obj: Any): Boolean = obj match {
     case points: Points => list == points.list
-    case _ => false
+    case _              => false
   }
 
 }

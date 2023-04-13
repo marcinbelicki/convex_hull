@@ -3,10 +3,10 @@ package utilities.geometry
 import utilities.geometry.orientation.Orientation
 
 case class Line(
-                 first: Point,
-                 last: Point
+                 a: Point,
+                 b: Point
                ) {
 
-  def checkOrientation(point: Point): Orientation = first.checkOrientation(last, point)
+  def checkOrientation(point: Point): Orientation = a.checkOrientation(b, point)
 
 }

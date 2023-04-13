@@ -3,13 +3,40 @@
 import scalafx.application.JFXApp
 import scalafx.scene.Scene
 import scalafx.scene.paint.Color.{Black, Red, White}
-import utilities.btc.Prices.BTC
+import utilities.btc.Prices.{BTC, BTC_POINTS}
 import utilities.geometry.{LeftPoints, Point, Shapes}
 import utilities.scalafx.WhitePolyline
 
+
+
+object a extends App {
+
+  object Orientation extends Enumeration {
+    type Orientation = Value
+
+    val
+    RIGHT,
+    NO_TURN,
+    LEFT
+    = Value
+
+    private lazy val valuesMap: Map[Int, Orientation] =
+      values
+        .map(value => (value.id - 1, value))
+        .toMap
+
+    private def getFromSign(sign: Int) =
+      valuesMap.apply(sign)
+
+    def get(d: Double): Orientation = {
+      val sign = d.sign.toInt
+      getFromSign(sign)
+    }
+  }
+
+  println(Orientation.get(-1))
+}
 object Demo extends JFXApp {
-
-
 //  val leftPoints = new LeftPoints(
 //    list = List(
 //      Point(-3, 0),
@@ -22,11 +49,11 @@ object Demo extends JFXApp {
 //    )
 //  )
 
-  val leftPoints = BTC.toLeftPoints(_.date.getEpochSecond, _.low).flipPoints
+  private val leftPoints = BTC_POINTS.flipPoints
 
   val convexHull = leftPoints.calculateConvexHull
 
-  val scale: Shapes => Shapes= _.scale(Point(0,1000), Point(1000,0))
+  val scale: Shapes => Shapes = _.scale(Point(0,1000), Point(1000,0))
 
 
   val colors = List(

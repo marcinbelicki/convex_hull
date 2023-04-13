@@ -24,17 +24,21 @@ case class Point(
 
   def +(that: Point): Point = Point(x + that.x, y + that.y)
 
+  def /[T](number: T)(implicit numeric: Numeric[T]): Point = {
+    val double = numeric.toDouble(number)
+    Point(x / double, y / double)
+  }
 
 
-  def scale(xScale: Double, yScale: Double, leftBottom: Point, originalLeftBottom: Point) = {
+  def scale(xScale: Double, yScale: Double, leftBottom: Point, originalLeftBottom: Point): Point = {
 
     val difference = this - originalLeftBottom
 
     leftBottom + Point(difference.x * xScale, difference.y * yScale)
   }
 
-  def toList = List(x, y)
+  def toList: List[Double] = List(x, y)
 
-  def flip = Point(y, x)
+  def flip: Point = Point(y, x)
 
 }
