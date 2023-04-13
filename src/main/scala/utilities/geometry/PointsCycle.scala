@@ -43,7 +43,8 @@ abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[
       pointRef
     }
 
-    def isInTriangle(t1: PointRef, t2: PointRef, t3: PointRef): Boolean = ???
+    def isInTriangle(t2: PointRef, t3: PointRef): Boolean =
+      Orientation.calculateThreePointsOrientation(t2.point, t3.point, point) == Orientation.Left
   }
 
   object NoPointRef extends AbstractPointRef {
@@ -61,8 +62,7 @@ abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[
     if (NoPointRef.hasNext) {
       var q = NoPointRef.next
       while (q.hasNext) {
-        q = q.next
-        if (q.next.isInTriangle(???, q, q.next.next)) {
+        if (q.next.isInTriangle(q, q.next.next)) {
           q.next = q.next.next
           q.next.prev = q
           if (q ne NoPointRef.next) q = q.prev
