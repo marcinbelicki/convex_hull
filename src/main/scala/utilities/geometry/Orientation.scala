@@ -28,5 +28,4 @@ object Orientation extends Enumeration {
   def calculateLineAndPointOrientation(line: Line, point: Point): Orientation =
     calculateThreePointsOrientation(line.a, line.b, point)
 
-
 }

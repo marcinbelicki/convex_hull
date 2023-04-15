@@ -90,5 +90,4 @@ class PointsCycle(points: Points) extends Iterable[Point] {
     toList
   }
 
-
 }

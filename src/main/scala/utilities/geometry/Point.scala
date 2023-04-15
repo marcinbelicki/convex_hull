@@ -2,10 +2,7 @@ package utilities.geometry
 
 import utilities.geometry.orientation.{Left, NoTurn, Orientation, Right}
 
-case class Point(
-                  x: Double,
-                  y: Double
-                ) {
+case class Point(x: Double, y: Double) {
 
   def -(that: Point): Point = Point(x - that.x, y - that.y)
   def +(that: Point): Point = Point(x + that.x, y + that.y)
