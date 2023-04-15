@@ -8,9 +8,9 @@ object Orientation extends Enumeration {
   = Value
 
   private val signumMap: Map[Double, Orientation] = Map(
-   1 -> Left,
-   0 -> NoTurn,
-   -1 -> Right
+   1d -> Left,
+   0d -> NoTurn,
+   -1d -> Right
   )
 
   private def calculateOrientationFromDouble(double: Double): Orientation = signumMap(double.sign)

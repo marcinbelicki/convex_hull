@@ -11,7 +11,7 @@ import scala.annotation.tailrec
 
 class LeftPoints(
                   list: PointFullList
-                ) extends Points(list) {
+                ) extends PointsSet(list) {
 
   val originalLeftBottom: Point = Point(
     list.map(_.x).min,

@@ -1,12 +1,12 @@
 package utilities.geometry.ordering
 
 import utilities.geometry.{Point, PointsUtils}
+import Ordering.Double.TotalOrdering
 
 trait OrientationOrdering extends Ordering[Point] {
   final override def compare(x: Point, y: Point): Int = {
-    import Ordering.Double.TotalOrdering.compare
-    compare(phase(x), phase(y)) match {
-      case 0 => compare(distance(x), distance(y))
+    TotalOrdering.compare(phase(x), phase(y)) match {
+      case 0 => TotalOrdering.compare(distance(x), distance(y))
       case phaseCompared => phaseCompared
     }
   }

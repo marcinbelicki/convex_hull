@@ -1,12 +1,15 @@
 package utilities.geometry
 
-abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[Point] {
+import utilities.geometry.PointsUtils.Points
 
+class PointsCycle(points: Points) extends Iterable[Point] {
+
+  private lazy val first = NoPointRef.next
 
   override def iterator: Iterator[Point] = new Iterator[Point] {
     private var currentPointRef: AbstractPointRef = NoPointRef
 
-    override def hasNext: Boolean = currentPointRef.hasNext
+    override def hasNext: Boolean = currentPointRef.isNotLast
 
     override def next(): Point = {
       val next = currentPointRef.next
@@ -15,26 +18,32 @@ abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[
     }
   }
 
-  private def createPointRefs(points: PointsUtils.Points): AbstractPointRef =
-    points.foldLeft[AbstractPointRef](NoPointRef)(_.addPoint(_))
+  private def createPointRefs(points: Points): AbstractPointRef =
+    points.foldLeft[AbstractPointRef](NoPointRef)(_.addPoint(_)).addLastPointAndReturn()
 
   createPointRefs(points)
-
 
   trait AbstractPointRef {
     var next: PointRef = _
     var prev: PointRef = _
 
-    final def hasNext: Boolean = next ne null
+    def isNotFirst: Boolean
+    def isNotLast: Boolean
 
     def addPoint(point: Point): PointRef
 
-    def addPointToList(list: PointsUtils.Points): PointsUtils.Points =
-      if (hasNext) next.point :: list
-      else list.reverse
+    protected def addLastPoint(): Unit
+
+    final def addLastPointAndReturn(): AbstractPointRef = {
+      addLastPoint()
+      this
+    }
   }
 
   class PointRef(val point: Point) extends AbstractPointRef {
+
+    final def isNotFirst: Boolean = this ne first
+    final def isNotLast: Boolean = next ne first
 
     override def addPoint(point: Point): PointRef = {
       val pointRef = new PointRef(point)
@@ -45,6 +54,11 @@ abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[
 
     def isInTriangle(t2: PointRef, t3: PointRef): Boolean =
       Orientation.calculateThreePointsOrientation(t2.point, t3.point, point) == Orientation.Left
+
+    override protected def addLastPoint(): Unit = {
+      next = first
+      first.prev = this
+    }
   }
 
   object NoPointRef extends AbstractPointRef {
@@ -55,27 +69,26 @@ abstract class PointsCycle private(points: PointsUtils.Points) extends Iterable[
       pointRef
     }
 
+    override def isNotFirst: Boolean = first ne null
+    override def isNotLast: Boolean = first ne null
+
+    override protected def addLastPoint(): Unit = ()
   }
 
-  def getHull: PointsUtils.Points = {
+  def getHull: Points = {
 
-    if (NoPointRef.hasNext) {
+    if (NoPointRef.isNotLast) {
       var q = NoPointRef.next
-      while (q.hasNext) {
+      while (q.isNotLast) {
         if (q.next.isInTriangle(q, q.next.next)) {
           q.next = q.next.next
           q.next.prev = q
-          if (q ne NoPointRef.next) q = q.prev
+          if (q.isNotFirst) q = q.prev
         } else q = q.next
       }
     }
     toList
   }
-
-
-}
-
-object PointsCycle {
 
 
 }

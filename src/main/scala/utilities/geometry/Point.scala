@@ -7,6 +7,13 @@ case class Point(
                   y: Double
                 ) {
 
+  def -(that: Point): Point = Point(x - that.x, y - that.y)
+  def +(that: Point): Point = Point(x + that.x, y + that.y)
+  def /[T](number: T)(implicit numeric: Numeric[T]): Point = {
+    val double = numeric.toDouble(number)
+    Point(x / double, y / double)
+  }
+
   def checkOrientation(two: Point, thr: Point): Orientation = (
         x      * two.y
       + y      * thr.x
@@ -20,14 +27,7 @@ case class Point(
     case _ => Right
   }
 
-  def -(that: Point): Point = Point(x - that.x, y - that.y)
 
-  def +(that: Point): Point = Point(x + that.x, y + that.y)
-
-  def /[T](number: T)(implicit numeric: Numeric[T]): Point = {
-    val double = numeric.toDouble(number)
-    Point(x / double, y / double)
-  }
 
 
   def scale(xScale: Double, yScale: Double, leftBottom: Point, originalLeftBottom: Point): Point = {
