@@ -1,8 +1,12 @@
 package utilities.geometry.convexhull.algorithms
 
 import utilities.geometry.PointsUtils.Points
-import utilities.geometry.ordering.OrientationOrdering
 
 trait ConvexHullAlgorithm extends Product {
-  def calculate(points: Points): Points
+  final def calculate(points: Points): Points = {
+    require(points.nonEmpty, "You can not calculate convex hull of an empty points set.")
+    nonEmptyCalculate(points)
+  }
+
+  protected def nonEmptyCalculate(points: Points): Points
 }

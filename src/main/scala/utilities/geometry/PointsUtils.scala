@@ -18,6 +18,17 @@ object PointsUtils {
 
   def distanceFromCenter(p: Point): Double = sqrt(distanceFromCenterSquared(p))
 
+
+  def angleBetweenThreePoints(a: Point, b: Point, c: Point): Double = {
+    val newC = c - b
+    val newA = a - b
+    val denominator = distanceFromCenterSquared(newA)
+    val calculatedPoint = Point(newA.x * newC.x + newA.y * newC.y, newA.y * newC.x - newA.x * newC.y) / denominator
+    phase(calculatedPoint)
+  }
+
+
+
   def phase(p: Point): Double = {
     import p.{x, y}
     (x.sign, y.sign) match {
