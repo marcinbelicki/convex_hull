@@ -4,11 +4,10 @@ import org.scalatest.Assertion
 import org.scalatest.wordspec.AnyWordSpec
 import utilities.geometry.Point
 import utilities.geometry.PointsUtils.Points
-import AlgorithmTest.{EXPECTED_CONVEX_HULL, INPUT_POINTS, ONE_INPUT_POINT}
+import utilities.geometry.convex.hull.algorithms.AlgorithmTest.{EXPECTED_CONVEX_HULL, INPUT_POINTS, ONE_INPUT_POINT}
 import utilities.geometry.convexhull.algorithms.ConvexHullAlgorithm
-import utilities.geometry.ordering.OrientationOrdering
 
-abstract class AlgorithmTest(convexHullAlgorithm: ConvexHullAlgorithm)(implicit ordering: OrientationOrdering) extends AnyWordSpec {
+abstract class AlgorithmTest(convexHullAlgorithm: ConvexHullAlgorithm) extends AnyWordSpec {
   private def convexHullAlgorithmName: String = convexHullAlgorithm.productPrefix
 
   private def assertExpectedOutput(input: Points, expectedOutput: Points): Assertion = {
