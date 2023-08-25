@@ -14,7 +14,7 @@ class LeftPointsTest extends AnyWordSpec {
           Point(-4, 3.5),
           Point(-2, 4),
           Point(-2.5, 5),
-          Point(0, 5),
+          Point(0, 5)
         )
       )
 
@@ -25,7 +25,7 @@ class LeftPointsTest extends AnyWordSpec {
           Point(-4, 2),
           Point(-4, 3.5),
           Point(-2.5, 5),
-          Point(0, 5),
+          Point(0, 5)
         )
       )
       assert(actualHull == expectedHull)
