@@ -7,7 +7,9 @@ trait PointsCycle extends Iterable[Point] {
 
   this: ListOfPoints =>
 
-  private lazy val first = NoPointRef.next
+  protected lazy val first: PointRef = NoPointRef.next
+
+  private var firstPoint: PointRef = _
 
   private def createPointRefs(points: Points): AbstractPointRef =
     points.foldLeft[AbstractPointRef](NoPointRef)(_.addPoint(_)).addLastPointAndReturn()
@@ -25,7 +27,6 @@ trait PointsCycle extends Iterable[Point] {
       next.point
     }
   }
-
 
 
   trait AbstractPointRef {
@@ -55,13 +56,17 @@ trait PointsCycle extends Iterable[Point] {
     override def addPoint(point: Point): PointRef = {
       val pointRef = new PointRef(point)
       pointRef.prev = this
+
+      if (pointRef.point.y < NoPointRef.next.point.y) NoPointRef.next = pointRef
+      else if (pointRef.point.y == NoPointRef.next.point.y && pointRef.point.x < NoPointRef.next.point.x) NoPointRef.next = pointRef
+
       next = pointRef
       pointRef
     }
 
     override protected def addLastPoint(): Unit = {
-      next = first
-      first.prev = this
+      next = firstPoint
+      firstPoint.prev = this
     }
   }
 
@@ -70,6 +75,7 @@ trait PointsCycle extends Iterable[Point] {
     override def addPoint(point: Point): PointRef = {
       val pointRef = new PointRef(point)
       next = pointRef
+      firstPoint = pointRef
       pointRef
     }
 
